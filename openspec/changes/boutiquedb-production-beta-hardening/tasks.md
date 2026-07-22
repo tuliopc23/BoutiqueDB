@@ -76,3 +76,7 @@ Detailed acceptance criteria and evidence are tracked as BD-015…BD-038 in
   arm64/x86_64.
 - Physical-device production CloudKit push/account/two-device convergence remains an explicit
   host-app QA gate; it is not represented as locally verified.
+- The tag-triggered GitHub release job was not allocated a runner (`runner_id: 0`) because
+  GitHub reports the account is locked for a billing issue. No hosted step executed. The
+  prerelease was created explicitly after the equivalent local gates and fresh public-clone
+  build passed; rerun Actions after the account billing lock is cleared.
