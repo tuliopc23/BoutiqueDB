@@ -1,0 +1,57 @@
+# BoutiqueDB engine fork — Apple/Swift only.
+# Builds turso_sdk_kit staticlib for the macOS triple used by BoutiqueDB-Swift.
+# Full multi-arch xcframework builds happen in BoutiqueDB-Swift release/CI.
+name: sdk-kit Apple
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "sdk-kit/**"
+      - "sdk-kit-macros/**"
+      - "core/**"
+      - "extensions/**"
+      - "sqlite/parser/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "rust-toolchain.toml"
+      - ".github/workflows/sdk-kit-apple.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "sdk-kit/**"
+      - "sdk-kit-macros/**"
+      - "core/**"
+      - "extensions/**"
+      - "sqlite/parser/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "rust-toolchain.toml"
+      - ".github/workflows/sdk-kit-apple.yml"
+
+concurrency:
+  group: sdk-kit-apple-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-macos-arm64:
+    name: macos-arm64 sdk-kit
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin
+      - name: Build libturso_sdk_kit (macos arm64)
+        env:
+          MACOSX_DEPLOYMENT_TARGET: "14.0"
+        run: |
+          export PATH="$HOME/.cargo/bin:$PATH"
+          cargo rustc -p turso_sdk_kit --release \
+            --features fts,encryption,pure-rust-crypto \
+            --target aarch64-apple-darwin \
+            --crate-type=staticlib
+          test -f target/aarch64-apple-darwin/release/libturso_sdk_kit.a
+          lipo -info target/aarch64-apple-darwin/release/libturso_sdk_kit.a

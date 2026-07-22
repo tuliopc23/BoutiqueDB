@@ -1,25 +1,22 @@
 # BoutiqueDB fork CI policy (Apple / Swift only)
 
-This repository is a **fork of Turso used as the engine for BoutiqueDB-Swift**.
+This repository is a **Turso fork used only as the engine for BoutiqueDB-Swift**.
 
-## Scope
+## Product surface
 
-| In scope | Out of scope |
-|----------|----------------|
-| Rust engine / `sdk-kit` correctness | Publishing to NuGet, Maven, npm, crates.io |
-| Building staticlibs for Apple | .NET / Java / Python / Go / NAPI / RN bindings CI |
-| Conformance useful for engine quality | Multi-language package registries |
+| Repo | Role |
+|------|------|
+| [`BoutiqueDB-Swift`](https://github.com/tuliopc23/BoutiqueDB-Swift) | **Only** public package (SPM / SPI, iOS + macOS) |
+| This repo (`BoutiqueDB`) | Engine source (`sdk-kit`) for multi-arch `TursoSDK.xcframework` |
 
-The **public Swift package** lives in  
-[`tuliopc23/BoutiqueDB-Swift`](https://github.com/tuliopc23/BoutiqueDB-Swift)  
-and is the only surface we publish for app integration (SPM / SPI).
+## Active workflows
 
-## Removed workflows (do not re-add)
+- `sdk-kit-apple.yml` — path-filtered build of `libturso_sdk_kit` for Apple
 
-- `dotnet-publish.yml`, `dotnet-test.yml`
-- `java-publish.yml`, `java.yml`
-- `python.yml`, `go.yml`, `napi.yml`, `react-native.yml`
-- `publish-cli-npm.yml`, `publish-crates.yml`
-- cargo-dist `release.yml`, `turso-serverless.yml`
+## Never re-add
 
-Agents: **never** restore language-binding publish workflows or registry publish jobs on this fork.
+- Language binding tests/publish: .NET/NuGet, Java/Maven, Python, Go, NAPI, RN
+- crates.io / npm CLI publish, cargo-dist release, serverless publish
+- Upstream Turso bench/fuzz/antithesis/codspeed/elle/conformance matrices on this fork
+
+Agents: keep CI minimal and Apple-focused. Do not restore multi-language registry jobs.
