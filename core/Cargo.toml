@@ -145,12 +145,13 @@ loom = { workspace = true }
 [target.'cfg(shuttle)'.dependencies]
 shuttle = { workspace = true }
 
-# Use pure-rust for Android and MacOS to avoid C cross-compilation issues.
-# Other targets can opt in via the `pure-rust-crypto` feature.
-[target.'cfg(any(target_os = "android", target_os = "macos"))'.dependencies]
+# Use pure-rust for mobile + Apple platforms to avoid C cross-compilation issues
+# (iOS device/simulator, macOS, Android). Other targets can opt in via
+# the `pure-rust-crypto` feature.
+[target.'cfg(any(target_os = "android", target_os = "macos", target_os = "ios"))'.dependencies]
 aegis = { version = "0.9.8", features = ["pure-rust"] }
 
-[target.'cfg(not(any(target_os = "android", target_os = "macos")))'.dependencies]
+[target.'cfg(not(any(target_os = "android", target_os = "macos", target_os = "ios")))'.dependencies]
 aegis = { version = "0.9.8" }
 
 [build-dependencies]

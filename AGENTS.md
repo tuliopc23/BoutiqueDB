@@ -1,5 +1,9 @@
 # Turso Agent Guidelines
 
+## File Search guidelines (FFF)
+
+Prefer the use of fff tools (mcp) for file search and file grep.
+
 SQLite rewrite in Rust. 40+ crate workspace.
 
 ## Quick Reference
@@ -59,19 +63,19 @@ limbo/
 
 ## Where to Look
 
-| Task | Location | Notes |
-|------|----------|-------|
-| Query execution | `core/vdbe/execute.rs` | 12k LOC bytecode interpreter |
-| SQL compilation | `core/translate/` | AST → bytecode, optimizer in `optimizer/` |
-| B-tree/pages | `core/storage/btree.rs` | 10k LOC, SQLite-compatible format |
-| WAL/durability | `core/storage/wal.rs` | Write-ahead log, checkpointing |
-| SQL parsing | `sqlite/parser/src/parser.rs` | 11k LOC recursive descent |
-| Add extension | `extensions/core/` | ExtensionApi, scalar/aggregate/vtab traits |
-| Add binding | `bindings/` | PyO3, NAPI, JNI, FRB, CGO patterns |
-| Deterministic tests | `testing/simulator/` | Fault injection, differential testing |
-| New SQL tests | `sqlite/conformance/sqlite-sqltests/` | `.sqltest` format preferred |
-| Quick sqlite3 diff | `scripts/diff.sh` | Compare sqlite3 vs tursodb output for a query |
-| MVCC testing REPL | `cli/mvcc_repl.rs` | Multi-conn concurrent txn testing REPL        |
+| Task                | Location                              | Notes                                         |
+| ------------------- | ------------------------------------- | --------------------------------------------- |
+| Query execution     | `core/vdbe/execute.rs`                | 12k LOC bytecode interpreter                  |
+| SQL compilation     | `core/translate/`                     | AST → bytecode, optimizer in `optimizer/`     |
+| B-tree/pages        | `core/storage/btree.rs`               | 10k LOC, SQLite-compatible format             |
+| WAL/durability      | `core/storage/wal.rs`                 | Write-ahead log, checkpointing                |
+| SQL parsing         | `sqlite/parser/src/parser.rs`         | 11k LOC recursive descent                     |
+| Add extension       | `extensions/core/`                    | ExtensionApi, scalar/aggregate/vtab traits    |
+| Add binding         | `bindings/`                           | PyO3, NAPI, JNI, FRB, CGO patterns            |
+| Deterministic tests | `testing/simulator/`                  | Fault injection, differential testing         |
+| New SQL tests       | `sqlite/conformance/sqlite-sqltests/` | `.sqltest` format preferred                   |
+| Quick sqlite3 diff  | `scripts/diff.sh`                     | Compare sqlite3 vs tursodb output for a query |
+| MVCC testing REPL   | `cli/mvcc_repl.rs`                    | Multi-conn concurrent txn testing REPL        |
 
 ## Guides
 
@@ -124,3 +128,13 @@ complete example.
 ## CI Note
 
 Running in GitHub Action? Max-turns limit in `.github/workflows/claude.yml`. OK to push WIP and continue in another action. Stay focused, avoid rabbit holes.
+
+## Swift package (BoutiqueDB-Swift)
+
+Public Swift bindings live in sibling repo `BoutiqueDB-Swift`. When changing
+`sdk-kit` / C ABI used by bindings:
+
+1. Rebuild **full multi-arch** `TursoSDK.xcframework` (macOS + iOS device +
+   iOS Simulator) — never macOS-only for public/SPI releases.
+2. Default: `SLICES=all ./Scripts/build-turso-sdk-xcframework.sh` in the Swift repo.
+3. See `BoutiqueDB-Swift/AGENTS.md` for SPI checklist and permanent dual-platform rule.
