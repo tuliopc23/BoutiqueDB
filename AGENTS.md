@@ -1,4 +1,11 @@
-# Turso Agent Guidelines
+# BoutiqueDB (engine fork) — Agent Guidelines
+
+> **Fork purpose:** Apple / Swift only. This monorepo supplies the Turso **sdk-kit**
+> engine for [BoutiqueDB-Swift](https://github.com/tuliopc23/BoutiqueDB-Swift).
+> Do **not** add, restore, or run CI that publishes to NuGet, Maven, npm, crates.io,
+> or any non-Swift package registry. Do **not** treat multi-language bindings as
+> product surface for this fork. See `.github/CI.md`.
+
 
 ## File Search guidelines (FFF)
 
