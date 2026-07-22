@@ -59,7 +59,7 @@ Detailed acceptance criteria and evidence are tracked as BD-015…BD-038 in
   simulator architectures; fail CI on deployment-target/link warnings (BD-037).
 - [x] 6.2 Validate clean URL-binary consumer builds, release/package workflows, checksums,
   SPI configuration, and declared platform matrix (BD-038).
-- [ ] 6.3 Run a second full gap review, fix all findings, then publish a prerelease beta tag and
+- [x] 6.3 Run a second full gap review, fix all findings, then publish a prerelease beta tag and
   document the remaining real-device CloudKit validation gate.
 
 ## Validation evidence
